@@ -1,47 +1,19 @@
 import express from 'express';
-import { isValidUrl } from './utils/utils.js';
-import { nanoid } from 'nanoid';
-import { createDbConnection } from './db/database.js'
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 const router = express.Router();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename); 
 
-router.post('/short', async (req, res) => {
-  const { origUrl } = req.body;
+router.use(express.static(path.join(__dirname, 'public')));
 
-  if (!isValidUrl(origUrl)) {
-    return res.status(400).json({ error: 'invalid url' });
-  }
+router.get('/', (req, res) => {
+    res.sendFile('index.html');
+});
 
-  const db = createDbConnection();
-
-  try {
-    const url = db.get(
-      'SELECT * FROM links WHERE originalURL = ?', [ url ], (err, row) => {
-        if(err){
-          return console.log(err);
-        } 
-        return  row != undefined ? [ original, shortened ] : null;
-    });
-
-    if(url){
-      return url.shortened;
-    }
-
-    db.run(
-      'INSERT INTO link (originalURL, shortenedURL) VALUES (?, ?)',
-      [ url, nanoid(6) ], (err) => {
-        if(err) {
-          return console.log(err);
-        } else {
-          return console.log("Sucess");
-        }
-      });
-  } catch(e) {
-    console.log(e);
-  }
+router.get('/planes', (req, res) => {
+    res.sendFile('pricing.html', { root: path.join(__dirname, 'public')});
 });
 
 export default router;
-
-//https://www.freecodecamp.org/news/how-to-validate-urls-in-javascript/
-//https://blog.logrocket.com/how-build-url-shortener-node-js/

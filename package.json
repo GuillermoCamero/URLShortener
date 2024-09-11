@@ -4,7 +4,7 @@
   "type": "module",
   "description": "",
   "main": "index.js",
- "scripts": {
+  "scripts": {
     "start": "nodemon ./app.js",
     "devstart": "SET DEBUG=myapp:* & nodemon ./bin/www"
   },
@@ -14,7 +14,7 @@
   "dependencies": {
     "@types/node": "^18.0.6",
     "env": "^0.0.2",
-    "express": "^4.19.2",
+    "express": "^5.0.0",
     "mocha": "^10.7.3",
     "nanoid": "^5.0.7",
     "nodemon": "^3.1.4",
